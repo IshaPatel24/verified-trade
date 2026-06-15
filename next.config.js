@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
+const path = require('path');
+
 const nextConfig = {
   reactStrictMode: true,
+  outputFileTracingRoot: path.join(__dirname, './'),
   env: {
     NEXT_PUBLIC_CLEANVERSE_APP_ID: process.env.NEXT_PUBLIC_CLEANVERSE_APP_ID,
     NEXT_PUBLIC_CLEANVERSE_DOCS_CODE: process.env.NEXT_PUBLIC_CLEANVERSE_DOCS_CODE,
