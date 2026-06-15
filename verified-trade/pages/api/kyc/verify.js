@@ -77,7 +77,7 @@ export default async function handler(req, res) {
     console.error('KYC verification error:', error.message);
     
     // Demo fallback
-    const tier = req.body.userType === 'business' ? 'BUSINESS' : 'INDIVIDUAL';
+    const tier = req.body.userType === 'business' ? 'BUSINESS' : req.body.userType === 'enterprise' ? 'ENTERPRISE' : 'INDIVIDUAL';
     const tierConfig = KYC_TIERS[tier];
 
     return res.status(200).json({

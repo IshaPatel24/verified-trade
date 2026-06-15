@@ -8,6 +8,18 @@ const API_URL = process.env.NEXT_PUBLIC_CLEANVERSE_API_URL;
 const transactions = [];
 
 export default async function handler(req, res) {
+  if (req.method === 'GET') {
+    const { userId } = req.query;
+    const userTransactions = userId 
+      ? transactions.filter(t => t.buyer_id === userId || t.seller_id === userId)
+      : transactions;
+
+    return res.status(200).json({
+      total: userTransactions.length,
+      transactions: userTransactions.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)),
+    });
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -111,19 +123,4 @@ export default async function handler(req, res) {
   }
 }
 
-// GET endpoint to fetch transaction history
-export async function getTransactionHistory(req, res) {
-  if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
 
-  const { userId } = req.query;
-  const userTransactions = userId 
-    ? transactions.filter(t => t.buyer_id === userId || t.seller_id === userId)
-    : transactions;
-
-  return res.status(200).json({
-    total: userTransactions.length,
-    transactions: userTransactions.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)),
-  });
-}
